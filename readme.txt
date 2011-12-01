@@ -15,25 +15,27 @@ This project will begin by replicating their method and then (I hope) extend or
 simplify it.
 
 Input:
-1.video of a person's face without movement
-2.video a moving face
-3.video of several faces / a face in different illumination conditions
-4.realtime video from a webcam
+1.video of a person's forehead
+2.video of a person's face without movement
+3.video a moving face
+4.video of several faces / a face in different illumination conditions
+5.realtime video from a webcam
 
 Pipeline:
 0.train model of plausible pulse sequences/rates (need data on this) or
   take frequency with highest power in an operation range
 1.detect faces or segment skin
-2.process each color channel separately (+ infrared, perhaps) and extract
-  independent components
-3.Fast-Fourier Transform to identify periodic components
-4.Map frequencies to plausible pulses or reject (need to account for sampling
-  rate, noise)
+2.process the RGB color channels as three sources (+ infrared, perhaps) and
+  extract independent components
+3.Fast-Fourier Transform to identify frequency powers
+4.Take the most powerful peak in the operational range of healthy human
+  pulses: 40-240 BPM or [.75, 4] Hz
 
 Output:
-1.Mark each pulse detected
-2.Rate over a time window
-3.Face/skin detection visualizations
+1.Calculuated rate over a time window
+2.Mark each pulse detected?
+3.Face/skin detection visualizations?
 
 Validation:
-need to acquire some sort of cheap pulse monitor (usual cuff and counting?)
+1.Off-the-shelf pulse oximeter with heart rate monitoring
+2.Good old-fashioned counting
