@@ -22,14 +22,25 @@ Input:
 5.realtime video from a webcam
 
 Pipeline:
-0.train model of plausible pulse sequences/rates (need data on this) or
-  take frequency with highest power in an operation range
+0.capture webcam video in 24-bit color at 640x480 resolution and 15 fps;
+  one minute duration; indoor illumination and sunlight illumination
 1.detect faces or segment skin
+  * detect faces w/ OpenCV implementation of viola-jones on
+    captured video frames
+  * take top 60% and middle 60% of each detected face as region of interest
 2.process the RGB color channels as three sources (+ infrared, perhaps) and
   extract independent components
-3.Fast-Fourier Transform to identify frequency powers
+  * process RGB channels over 30 s moving window w/ 96.7% overlap (by increments
+    of 1 s)
+  * normalize channels to have zero mean and unit variance
+  * whiten channels through eigendecomposition or singular-value decomposition.
+    decorrelating channels and scaling to unit variance simplifies the
+    optimization by restricting the necessary transformations to rotations
+  * find independent components through RADICAL by minimizing the total
+    estimated entropy of the channels
+3.Fast-Fourier Transform independent components to identify frequency powers
 4.Take the most powerful peak in the operational range of healthy human
-  pulses: 40-240 BPM or [.75, 4] Hz
+  pulses: 45-240 BPM or [.75, 4] Hz
 
 Output:
 1.Calculuated rate over a time window
