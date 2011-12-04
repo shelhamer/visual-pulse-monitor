@@ -1,0 +1,31 @@
+INSTALLING OPEN CV FACE DETECTION IN MATLAB PACKAGE
+
+This assumes *nix compilation, and has only been tested on OS X Lion.
+
+1a.
+Install OpenCV 2+ via homebrew or otherwise.
+Your OpenCV header files should be located at /usr/local/include/opencv
+and /usr/local/include/opencv2
+
+1b.
+Copy the trained face detection cascade included in OpenCV,
+haarcascade_frontalface_alt2.xml, to this directory
+
+2.
+Download Open CV Viola-Jones Face Detection in Matlab (by Sreekar Krishna)
+mex function from MatlabCentral File Exchange:
+http://www.mathworks.com/matlabcentral/fileexchange/19912
+
+3.
+Edit FaceDetect.cpp to replace
+#include "cv.h" with #include "opencv/cv.h"
+
+to take advantage of OpenCV 2 backwards-compatibility.
+
+4.
+Compile mex function (after running mex -setup for your platform):
+
+mex src/FaceDetect.cpp -I/usr/local/include -lopencv_core -lopencv_imgproc ...
+-lopencv_objdetect
+
+and include it in this directory.

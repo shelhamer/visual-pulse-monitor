@@ -1,3 +1,5 @@
 *.mat
 *.mov
 *.pdf
+bin
+!bin/install face detection.txt
