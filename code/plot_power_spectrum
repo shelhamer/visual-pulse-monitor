@@ -1,4 +1,4 @@
-function plot_freq(FFT, freq)
+function plot_power_spectrum(FFT, freq)
   % plot one-sided (positive) spectrum without amplitude normalization
 
   N = length(FFT);
@@ -6,5 +6,5 @@ function plot_freq(FFT, freq)
   pos_fft = FFT(center_idx:end);
   pos_freq = freq(center_idx:end);
 
-  plot(pos_freq, abs(pos_fft));
+  plot(pos_freq, abs(pos_fft).^2);
 end
