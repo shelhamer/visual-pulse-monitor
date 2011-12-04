@@ -34,7 +34,7 @@ Pipeline:
     of 1 s)
   * normalize channels to have zero mean and unit variance
   * whiten channels through eigendecomposition or singular-value decomposition.
-    decorrelating channels and scaling to unit variance simplifies the
+    decorrelating channels and scaling to unit covariance simplifies the
     optimization by restricting the necessary transformations to rotations
   * find independent components through RADICAL by minimizing the total
     estimated entropy of the channels
