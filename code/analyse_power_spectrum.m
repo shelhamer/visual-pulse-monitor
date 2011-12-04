@@ -14,7 +14,7 @@ function [pows, freq] = analyse_power_spectrum(X, Fs)
   freq = k/T;
 
   % select the positive domain FFT and range
-  zero_idx = N/2 + 1;
+  zero_idx = fN/2 + 1;
   amp = amp(zero_idx:end);
   freq = freq(zero_idx:end);
 
