@@ -40,7 +40,13 @@ function [traces] = trace_roi_channels(frames)
 
     if face > 0
       % record trace for successful detection
-      coords = face*(1/SCALE);
+      coords = face*(1/SCALE); % re-scale to true frame size
+
+      % take 60% width
+      w_dec = round(.2*coords(3));
+      coords = coords + [w_dec 0 -w_dec 0];
+
+      % save ROI
       roi = frames(coords(2):coords(2)+coords(4), ...
                    coords(1):coords(1)+coords(3), :, idx);
       traces(:, idx) = mean(mean(roi), 2);
