@@ -50,6 +50,12 @@ function [traces] = trace_roi_channels(frames)
       roi = frames(coords(2):coords(2)+coords(4), ...
                    coords(1):coords(1)+coords(3), :, idx);
       traces(:, idx) = mean(mean(roi), 2);
+
+      % debugging visualization
+      % if mod(idx, 10) == 0
+      %   figure
+      %   imagesc(roi)
+      % end
     end
   end
 end
