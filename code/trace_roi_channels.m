@@ -44,7 +44,7 @@ function [traces] = trace_roi_channels(frames)
 
       % take 60% width
       w_dec = round(.2*coords(3));
-      coords = coords + [w_dec 0 -w_dec 0];
+      coords = coords + [w_dec 0 -w_dec*2 0];
 
       % save ROI
       roi = frames(coords(2):coords(2)+coords(4), ...
