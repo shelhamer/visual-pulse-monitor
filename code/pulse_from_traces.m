@@ -59,6 +59,6 @@ function [pulse] = pulse_from_traces(traces, Fs, win_size, overlap)
     end
 
     % signal visualization
-    show_signals(this_block, Y, trace_spect, ic_spect);
+    show_signals(this_block, Y, trace_spect, ic_spect, [PULSE_MIN PULSE_MAX]);
   end
 end
