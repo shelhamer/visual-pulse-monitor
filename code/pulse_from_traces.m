@@ -13,7 +13,7 @@ function [pulse] = pulse_from_traces(traces, Fs, win_size, overlap)
 
   % default to Fs of 30 fps if unspecified
   % default to 30 sec window with 96.7% overlap if no window args given
-  if nargin < 3
+  if nargin == 1
     Fs = FS;
   end
   if nargin < 4
