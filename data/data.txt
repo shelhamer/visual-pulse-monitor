@@ -3,8 +3,12 @@ DATA
 Videos were recorded with the standard macbook pro iSight camera in full
 sunlight, an indoors mixture of sunlight and artificial light, and in purely
 artificial lighting. Videos were captured with the PhotoBooth application
-included in OS X with 620x426 resolution at 15 fps. Videos are all 1 minute in
-length.
+included in OS X with 620x426 resolution at ~15 fps. Videos are all 1-2 minutes
+in length.
+
+Additional videos were recorded with the kinect RGB camera with the IR source
+illuminated and a standard consumer digital camera. Kinect videos were recorded
+at ~30 fps and the digital camera videos were ~45 fps.
 
 Links to download test videos will be included after the presentation of
 the project.

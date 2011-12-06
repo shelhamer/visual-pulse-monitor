@@ -6,32 +6,32 @@ for validation once a medical-grade computerized pulse monitor is found.
 
 A BPM vector for each video is included in bpm.mat.
 
-indoor daylight, thumb, normal
+indoor daylight + artificial, thumb, normal
 
 68, 67, 67, 67, 67, 67, 67, 66, 67, 67, 67, 66, 68, 68, 69, 69, 69, 69, 69, 68,
 68, 69, 68, 68, 68, 68, 69, 69, 69, 68, 69, 69, 67, 68, 68, 68, 68, 68, 68, 68,
 68, 68, 69, 69, 69, 69, 69, 70, 70, 70, 70, 70, 70, 70, 70, 69, 69, 69, 69, 69
 
-indoor daylight, thumb, high
+indoor daylight + artificial, thumb, high
 
 99, 98, 98, 96, 96, 96, 96, 96, 96, 96, 96, 95, 95, 94, 94, 94, 94, 93, 93, 93,
 94, 94, 94, 94, 92, 95, 96, 95, 95, 95, 95, 93, 92, 92, 92, 92, 91, 92, 91, 91,
 89, 89, 88, 89, 84, 83, 84, 84, 84, 86, 86, 86, 85, 84, 84, 84, 84, 82, 82, 83
 
-indoor daylight, still, normal
+indoor daylight + artificial, still, normal
 
 64, 66, 66, 65, 66, 66, 65, 65, 66, 66, 65, 68, 69, 71, 71, 71, 71, 70, 70, 70,
 70, 70, 68, 68, 68, 68, 66, 67, 65, 65, 65, 64, 65, 66, 65, 64, 64, 64, 64, 63,
 63, 63, 63, 64, 64, 64, 65, 65, 65, 66, 66, 66, 68, 68, 69, 70, 70, 70, 70, 70
 
-indoor daylight, still, high
+indoor daylight + artificial + infrared on kinect, still, normal
 
 to be collected
 
-indoor daylight, moving, normal
+indoor artificial on camera, still, high
 
-to be collected
+collected, to be coded
 
-indoor daylight, moving, high
+outdoor daylight, still, high
 
-to be collected
+78-81 bpm (will code per-second measurements)
