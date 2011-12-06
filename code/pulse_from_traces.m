@@ -42,22 +42,23 @@ function [pulse] = pulse_from_traces(traces, Fs, win_size, overlap)
     B = jade(this_block);
     Y = B*this_block;
 
-    % figure; % signal visualization
-    for chn=1:num_channels
-      % pick maximum power frequency in each independent component as pulse
-      [pows, freq] = analyse_power_spectrum(Y(chn, :), Fs);
-      [ppows, pfreq] = bandlimit(pows, freq, PULSE_MIN, PULSE_MAX);
-      pulse(chn, idx) = max_power_freq(ppows, pfreq);
+    % find independent components by RADICAL
+    % [Y, B] = RADICAL(this_block);
 
-      % debugging output & signal visualization
-      % fprintf('  BPM for component #%d: %f \n', [chn pulse(chn, idx)*60]);
-      % plot_idx = (chn-1)*3 + 1;
-      % subplot(3,3,plot_idx);
-      % plot(1:length(this_block(chn,:)), this_block(chn,:))
-      % subplot(3,3,plot_idx+1);
-      % plot(1:length(Y), Y(2,:));
-      % subplot(3,3,plot_idx+2);
-      % plot_power_spectrum(ppows, pfreq);
+    % record power spectra for each channel trace & independent component
+    % pick maximum power frequency in each independent component as pulse
+    for chn=1:num_channels
+      [ic_pows, ic_freq] = analyse_power_spectrum(Y(chn, :), Fs);
+      [trace_pows, trace_freq] = analyse_power_spectrum(this_block(chn, :), Fs);
+      [ic_ppows, ic_pfreq] = bandlimit(ic_pows, ic_freq, PULSE_MIN, PULSE_MAX);
+      [trace_ppows, trace_pfreq] = bandlimit(trace_pows, trace_freq, PULSE_MIN, PULSE_MAX);
+      ic_spect(chn, :, :) = [ ic_pows ; ic_freq ];
+      trace_spect(chn, :, :) = [ trace_pows ; trace_freq ];
+
+      pulse(chn, idx) = max_power_freq(ic_ppows, ic_pfreq);
     end
+
+    % signal visualization
+    show_signals(this_block, Y, trace_spect, ic_spect);
   end
 end
