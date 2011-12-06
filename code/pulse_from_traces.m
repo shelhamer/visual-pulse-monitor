@@ -1,4 +1,4 @@
-function [pulse] = pulse_from_traces(traces, win_size, overlap)
+function [pulse] = pulse_from_traces(traces, Fs, win_size, overlap)
   % measure pulse from hand-picked frames
   % by signal normalization, independent components analysis,
   % fourier transform, and picking the maximum power frequency
@@ -7,12 +7,16 @@ function [pulse] = pulse_from_traces(traces, win_size, overlap)
   PULSE_MIN = .75;
   PULSE_MAX = 4;
 
-  Fs = 15; % sampling rate; video captured at ~15 fps
+  FS = 30; % sampling rate; video captured at ~30 fps
   WINDOW_SIZE = 30;   % window size in seconds
   OVERLAP     = 29;   % overlap in moving window in seconds
 
+  % default to Fs of 30 fps if unspecified
   % default to 30 sec window with 96.7% overlap if no window args given
-  if nargin == 1
+  if nargin < 3
+    Fs = FS;
+  end
+  if nargin < 4
     win_size = WINDOW_SIZE;
     overlap = OVERLAP;
   end
