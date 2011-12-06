@@ -31,13 +31,11 @@ mex src/FaceDetect.cpp -I/usr/local/include -lopencv_core -lopencv_imgproc ...
 and include it in this directory.
 
 5.
-Prevent MATLAB from using its old bundled libtiff by renaming the
-library file:
+Prevent MATLAB from using its old bundled libtiff by overriding the lib path:
 
-cd /Applications/MATLAB_R2010b.app/bin/maci64/
-mv libtiff.3.7.1.dylib libtiff.3.7.1.dylib.MATLAB
-mv libtiff.3.dylib libtiff.3.dylib.MATLAB
+% run this in matlab
+setenv(‘DYLD_LIBRARY_PATH’,['/usr/local/lib/:' getenv('DYLD_LIBRARY_PATH')]);
 
-N.B. You must have a more recent libtiff installed system-wide for this to
-work. It is also a bad idea to muck about with MATLAB internals like this,
-so your mileage may vary.
+N.B. You must have a more recent libtiff installed for this to
+work (and you should replace '/usr/local/lib/' with the path to your lib
+directory of course).
