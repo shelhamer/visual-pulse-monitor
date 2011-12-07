@@ -4,6 +4,7 @@ function [pulse] = pulse_from_traces(traces, Fs, win_size, overlap)
   % fourier transform, and picking the maximum power frequency
   % within the operation healthy human pulse range [.75, 4] Hz or 45-240 bpm
 
+  % operational range for human pulse (45-240 bpm)
   PULSE_MIN = .75;
   PULSE_MAX = 4;
 
