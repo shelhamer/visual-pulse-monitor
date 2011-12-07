@@ -1,4 +1,4 @@
-function [pulse] = pulse_from_traces(traces, Fs, win_size, overlap)
+function [pulse ic_spectra trace_spectra] = pulse_from_traces(traces, Fs, win_size, overlap)
   % measure pulse from hand-picked frames
   % by signal normalization, independent components analysis,
   % fourier transform, and picking the maximum power frequency
@@ -22,6 +22,8 @@ function [pulse] = pulse_from_traces(traces, Fs, win_size, overlap)
     overlap = OVERLAP;
   end
 
+  NUM_FREQS = 10; % number of top power frequencies to record
+
   % split channel traces into blocks by a moving window,
   % with the blocks normalized for zero mean and unit variance
   trace_blocks = extract_normalized_windows(traces, win_size*Fs, overlap*Fs);
@@ -30,6 +32,7 @@ function [pulse] = pulse_from_traces(traces, Fs, win_size, overlap)
 
   % measure pulse for each time window in each channel
   pulse = zeros([num_channels num_blocks]);
+  spectra = zeros([2 NUM_FREQS num_channels num_blocks]);
   for idx=1:num_blocks
     this_block = trace_blocks(:,:,idx);
     % progress output
@@ -57,6 +60,13 @@ function [pulse] = pulse_from_traces(traces, Fs, win_size, overlap)
       trace_spect(chn, :, :) = [ trace_pows ; trace_freq ];
 
       pulse(chn, idx) = max_power_freq(ic_ppows, ic_pfreq);
+
+      [ic_max_pow ic_max_idx] = sort(ic_ppows, 'descend');
+      ic_spectra(:, :, chn, idx) = [ic_pfreq(ic_max_idx(1:10)) ; ...
+                                    ic_max_pow(1:NUM_FREQS)];
+      [trace_max_pow trace_max_idx] = sort(trace_ppows, 'descend');
+      trace_spectra(:, :, chn, idx) = [trace_pfreq(trace_max_idx(1:10)) ; ...
+                                    trace_max_pow(1:NUM_FREQS)];
     end
 
     % signal visualization
