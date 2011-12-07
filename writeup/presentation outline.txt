@@ -1,0 +1,102 @@
+Visual Heart Rate Monitor
+A paper implementation
+
+Pulse Measurement:
+- standard pulse oximeters: reflective power of oxygenated hemoglobin
+  in blood
+- absorption curves for visible and near infrared: use drop in
+  green or spike in near infrared
+- photoplethysmography: measure blood volume by changes in reflective path
+  of the light
+
+Problem:
+- take the same measurement through standard video recording in
+  normal ambient lighting
+- sunlight has near-infrared wavelengths
+- can process larger image area
+
+Solution Outline: INCLUDE DIAGRAM
+0.capture video w/ standard webcam (iSight) and consumer digital camera
+  (Canon PowerShot)
+1.detect the region of interest: the face, by OpenCV 2 implementation of
+  the Viola-Jones detector
+2.spatially average color channels to give a trace over time
+3.preprocess traces to (A) extract time windows and (B) normalize the data
+4.blind source separation: separate independent components of traces
+5.analyse frequencies and power spectra
+6.select the highest power frequency as the heart rate, subject to operation
+  range of the healthy human pulse of .75–4 Hz = 45–240 BPM
+
+Data Collected:
+- Videos were all ~640x480, 24 bit color, and 15-45 fps
+- iSight webcam video indoors and outdoors, with full sunlight, mixed daylight
+  and artificial light, and artificial (CFL) light at night.
+- Kinect RGB video with IR source illuminated, with mixed daylight and
+  artificial light
+- Digital Camera video under artificial light
+- I wore an off-the-shelf heart rate monitor for the videos, then coded my
+  pulse once per second by stepping through the videos
+
+Region of Interest:
+- face is the most exposed, and the skin is relatively thin
+- use OpenCV implementation of the Viola-Jones cascade via MEX function
+- integral image features
+- cascade of classifiers
+
+Trace Preparation:
+- spatially average the pixels in each color channel to yield one
+  R, G, and B measurement per-frame
+- extract blocks by moving 30 s window at 1 s increment (96.7% overlap)
+- preprocess every block for independent components analysis:
+  * normalize to zero mean and unit variance
+  * detrend (remove linear trend)
+  * whiten or "sphere" the data to decorrelate each channel, making the
+    covariance is the identity; restricts optimization to rotations
+
+Blind Source Separation & ICA:
+- separation of a set of mixed signals without knowledge of the source
+  signals nor their mixing: extract maximally self-regular signals
+  while minimizing cross-regularity
+- cocktail party problem
+- independent components analysis (ICA) assumes that signals are a linear
+  mixture of sources and constructs a demixing matrix that approximates the
+  inverse of the original mixing:
+  * MIXING EQUATION
+  * to uncover independent sources, W must maximize the non-Gaussianity of
+    each source: by central limit theorem, sum of independent variables is
+    more Gaussian than the original variables
+- photoplethysmography fits the model: hemoglobin absorptivity differs across
+  visible and near infrared wavelengths, so each color sensor records a different
+  mixture of the heart rate signal; this signal is mixed with other
+  visual fluctuations due to motion or lighting variation
+
+ICA detail: JADE & RADICAL
+- ICA optimizes a cost function for non-Gaussianity: kurtosis, total marginal entropy
+  * kurtosis is the fourth moment (after mean, variance, and skewness):
+    maximizing absolute value maximizes non-Gaussianity. Kurtosis separates
+    independent non-Gaussian sources like variance separates independent Gaussians
+  * minimizing the total marginal entropies of the signals maximizes
+    non-Gaussianity, as the Gaussian distribution is the maximum entropy
+    distribution for any given variance
+    > ENTROPY EQUATION
+    > entropy as the "regularity" of the signal
+- JADE (Cardoso) is an iterative statistical method that works on the fourth-order
+  cumulant to approximate kurtosis; this is the method of the original
+  paper, performed by author's implementation
+- RADICAL (Learned-Miller, Fisher) is an exhaustive direct method that uses a
+  fast, unbiased entropy estimator (Vasicek); I implemented this method because
+  I actually understand it
+
+Frequency Analysis:
+- Just take the FFT for each independent component, look at the power spectrum,
+  and pick the highest
+- can apply a threshold to change over 1 second increments: pick highest within
+  this threshold
+
+Results:
+- SOME FIGURES
+- Not good. Do not match paper results.
+- Independent components do not always greatly differ
+- Signal power peaks are lower than reported, broader frequency power
+- Possible causes: improper assumptions (linearity of mixtures for ICA),
+  video capture (variable frame rate), lighting
