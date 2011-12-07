@@ -31,7 +31,7 @@ function [pulse ic_spectra trace_spectra] = pulse_from_traces(traces, Fs, win_si
   num_blocks = size(trace_blocks, 3);
 
   % measure pulse for each time window in each channel
-  pulse = zeros([num_channels num_blocks]);
+  pulse = zeros([1 num_blocks]);
   spectra = zeros([2 NUM_FREQS num_channels num_blocks]);
   for idx=1:num_blocks
     this_block = trace_blocks(:,:,idx);
@@ -50,7 +50,8 @@ function [pulse ic_spectra trace_spectra] = pulse_from_traces(traces, Fs, win_si
     % [Y, B] = RADICAL(this_block);
 
     % record power spectra for each channel trace & independent component
-    % pick maximum power frequency in each independent component as pulse
+    max_freqs = zeros([1 3]);
+    max_pows = zeros([1 3]);
     for chn=1:num_channels
       [ic_pows, ic_freq] = analyse_power_spectrum(Y(chn, :), Fs);
       [trace_pows, trace_freq] = analyse_power_spectrum(this_block(chn, :), Fs);
@@ -59,17 +60,21 @@ function [pulse ic_spectra trace_spectra] = pulse_from_traces(traces, Fs, win_si
       ic_spect(chn, :, :) = [ ic_pows ; ic_freq ];
       trace_spect(chn, :, :) = [ trace_pows ; trace_freq ];
 
-      pulse(chn, idx) = max_power_freq(ic_ppows, ic_pfreq);
-
       [ic_max_pow ic_max_idx] = sort(ic_ppows, 'descend');
       ic_spectra(:, :, chn, idx) = [ic_pfreq(ic_max_idx(1:10)) ; ...
                                     ic_max_pow(1:NUM_FREQS)];
       [trace_max_pow trace_max_idx] = sort(trace_ppows, 'descend');
       trace_spectra(:, :, chn, idx) = [trace_pfreq(trace_max_idx(1:10)) ; ...
                                     trace_max_pow(1:NUM_FREQS)];
+
+      [max_freqs(chn) max_pows(chn)] = max_power_freq(ic_ppows, ic_pfreq);
     end
 
+    % pick maximum power frequency of any channel as pulse
+    [v pulse_idx] = max(max_pows);
+    pulse(idx) = max_freqs(pulse_idx);
+
     % signal visualization
-    show_signals(this_block, Y, trace_spect, ic_spect, [PULSE_MIN PULSE_MAX]);
+    % show_signals(this_block, Y, trace_spect, ic_spect, [PULSE_MIN PULSE_MAX]);
   end
 end
