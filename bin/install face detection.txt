@@ -16,11 +16,20 @@ Download Open CV Viola-Jones Face Detection in Matlab (by Sreekar Krishna)
 mex function from MatlabCentral File Exchange:
 http://www.mathworks.com/matlabcentral/fileexchange/19912
 
-3.
+3a.
 Edit FaceDetect.cpp to replace
 #include "cv.h" with #include "opencv/cv.h"
-
 to take advantage of OpenCV 2 backwards-compatibility.
+
+3b.
+Edit FaceDetect.cpp to fix (or at least alleviate) a memory leak by
+ending the function with:
+
+// Release all the memory
+cvReleaseImage( &gray );
+cvReleaseMemStorage(&storage);
+cvReleaseHaarClassifierCascade(&cascade);
+return;
 
 4.
 Compile mex function (after running mex -setup for your platform):
