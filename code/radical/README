@@ -1,0 +1,31 @@
+This is RADICAL release 1.2. 
+
+Changes from version 1.1:
+
+A bug was found in the parameter settings in RADICAL.m. Setting AUG_FLAG
+to 0 had no effect.
+
+Now, setting AUG_FLAG to 0 has the appropriate behavior. When AUG_FLAG=0,
+no "smoothing points" or auxiliary points are used. This greatly increases
+the speed of the algorithm, while reducing the accuracy when there is not
+enough data. 
+
+Changes from version 1.0:
+
+1) A major bug was found and fixed from
+   version 1.0. The whitening matrix was computed incorrectly in previous
+   versions. The program worked correctly for pre-whitened data but not
+   for non-white data. 
+
+2) The speed has been increased about 20% by changes to the vasicekm.m
+   routine.
+
+The following functions are found the RADICAL home
+directory.
+
+RADICAL_2D:        Solves two-dimensional ICA problem.
+RADICAL:           Solves ICA problem in 2 or more dimensions.  
+fast_RADICAL:      Same as RADICAL, but has AUG_FLAG=0 (see above).
+demo_2d:	   Shows usage of RADICAL_2D with a 2-d example.
+demo_5d:	   Shows usage of RADICAL with a 5-d example.
+demo_5d_fast:
