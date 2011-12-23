@@ -8,6 +8,9 @@ function [pulse ic_spectra trace_spectra] = pulse_from_traces(traces, Fs, win_si
   PULSE_MIN = .75;
   PULSE_MAX = 4;
 
+  % threshold on pulse change per-measurement (12 bpm)
+  PULSE_DELTA = .2;
+
   FS = 30; % sampling rate; video captured at ~30 fps
   WINDOW_SIZE = 30;   % window size in seconds
   OVERLAP     = 29;   % overlap in moving window in seconds
@@ -50,9 +53,8 @@ function [pulse ic_spectra trace_spectra] = pulse_from_traces(traces, Fs, win_si
     % [Y, B] = RADICAL(this_block);
 
     % record power spectra for each channel trace & independent component
-    max_freqs = zeros([1 3]);
-    max_pows = zeros([1 3]);
     for chn=1:num_channels
+      % power spectra
       [ic_pows, ic_freq] = analyse_power_spectrum(Y(chn, :), Fs);
       [trace_pows, trace_freq] = analyse_power_spectrum(this_block(chn, :), Fs);
       [ic_ppows, ic_pfreq] = bandlimit(ic_pows, ic_freq, PULSE_MIN, PULSE_MAX);
@@ -60,19 +62,37 @@ function [pulse ic_spectra trace_spectra] = pulse_from_traces(traces, Fs, win_si
       ic_spect(chn, :, :) = [ ic_pows ; ic_freq ];
       trace_spect(chn, :, :) = [ trace_pows ; trace_freq ];
 
+      % rank frequencies by power
       [ic_max_pow ic_max_idx] = sort(ic_ppows, 'descend');
       ic_spectra(:, :, chn, idx) = [ic_pfreq(ic_max_idx(1:NUM_FREQS)) ; ...
                                     ic_max_pow(1:NUM_FREQS)];
       [trace_max_pow trace_max_idx] = sort(trace_ppows, 'descend');
       trace_spectra(:, :, chn, idx) = [trace_pfreq(trace_max_idx(1:NUM_FREQS)) ; ...
                                     trace_max_pow(1:NUM_FREQS)];
-
-      [max_freqs(chn) max_pows(chn)] = max_power_freq(ic_ppows, ic_pfreq);
     end
 
-    % pick maximum power frequency of any channel as pulse
-    [v pulse_idx] = max(max_pows);
-    pulse(idx) = max_freqs(pulse_idx);
+    % pick maximum power frequency of any channel
+    % within change threshold as pulse
+    max_freqs = ic_spectra(1, :, :, idx);
+    max_pows = ic_spectra(2, :, :, idx);
+    if idx > 1
+      last_pulse = pulse(idx-1);
+      valid_freq_idx = find(max_freqs > last_pulse - PULSE_DELTA  ...
+                            & max_freqs < last_pulse + PULSE_DELTA);
+    else
+      valid_freq_idx = 1:NUM_FREQS;
+    end
+
+    if length(valid_freq_idx) == 0
+      % no frequency in valid range for this measurement; keep previous
+      pulse(idx) = pulse(idx-1);
+    else
+      % pick the highest power frequency in valid range
+      valid_freqs = max_freqs(valid_freq_idx)
+      valid_pows = max_pows(valid_freq_idx);
+      [v pulse_idx] = max(valid_pows);
+      pulse(idx) = valid_freqs(pulse_idx);
+    end
 
     % signal visualization
     % show_signals(this_block, Y, trace_spect, ic_spect, [PULSE_MIN PULSE_MAX]);
