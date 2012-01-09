@@ -2,12 +2,16 @@
 
 ## Contact-Free / Automated Pulse Monitoring:
 
-Ming-Zher Poh, Daniel J. McDuff, Rosalind W. Picard. “Non-contact, automated
+M. Poh, D. McDuff, R. Picard. “Non-contact, automated
 cardiac pulse measurements using video imaging and blind source separation”
 Optics Express. 2010. 18(10) 10762-74
 
 ^ the first goal of this project is to re-implement this paper and achieve its
   results
+
+M. Poh, D. McDuff, W. Picard. “Advancements in Noncontact, Multiparameter Physiological Measurements Using a Webcam”
+
+^ update and elaboration of the above paper
 
 M. Garbey, N. Sun, A. Merla, I. Pavlidis. “Contact-Free Measurement of Cardiac
 Pulse Based on the Analysis of Thermal Imagery” IEEE Transactions on Biomedical
