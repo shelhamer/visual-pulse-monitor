@@ -1,0 +1,51 @@
+# REFERENCES
+
+## Contact-Free / Automated Pulse Monitoring:
+
+Ming-Zher Poh, Daniel J. McDuff, Rosalind W. Picard. “Non-contact, automated
+cardiac pulse measurements using video imaging and blind source separation”
+Optics Express. 2010. 18(10) 10762-74
+
+^ the first goal of this project is to re-implement this paper and achieve its
+  results
+
+M. Garbey, N. Sun, A. Merla, I. Pavlidis. “Contact-Free Measurement of Cardiac
+Pulse Based on the Analysis of Thermal Imagery” IEEE Transactions on Biomedical
+Engineering. 2007. 54(8): 1418-26
+
+B. Kim, S. Yoo. “Motion Artifact Reduction in Photoplethysmography Using
+Independent Component Analysis” IEEE Transactions on Biomedical Engineering.
+2006. 53(3): 566-8
+
+W. Verkruysse, L. Svaasand, J. Nelson. “Remote plethysmographic imaging using
+ambient light” Optics Express. 2008. 16(26): 21434-45
+
+T. He, G. Clifford, L. Tarassenko. “Application of ICA in Removing
+Artefacts from the ECG”
+
+## Independent Components Analysis and Blind Source Separation:
+
+E. Learned-Miller, J. Fisher III. “ICA Using Spacings Estimates of Entropy”
+Journal of Machine Learning Research. 2003. 4: 1271-95
+
+^ paper on the RADICAL ICA algorithm and entropy estimation
+
+Jean-François Cardoso. “High-Order Contrasts for Independent Component Analysis”
+Neural Computation. 1999. 11(1): 157-92
+
+^ paper on the JADE ICA algorithm
+
+## Photoplethysmography:
+
+W. Cui, L. Ostrander, B. Lee. “In Vivo Reflectance of Blood and Tissue as a
+Function of Light Wavelength” IEEE Transactions on Biomedical Engineering.
+1990. 37(6): 632-9
+
+W. G. Zijistra, A. Buursma, and W. P. Meeuwsen-van der Roest. “Absorption
+Spectra of Human Fetal and Adult Oxyhemoglobin, De-Oxyhemoglobin,
+Carboxyhemoglobin, and Methemoglobin” Clinical Chemistry. 1991. 37(9): 1633-8.
+
+## Medical Measurement Evaluation:
+
+J. Martin Bland, Douglas G. Altman. “Statistical Methods for Assessing Agreement
+Between Two Methods of Clinical Measurement” Lancet. 1986.
