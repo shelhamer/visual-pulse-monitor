@@ -6,6 +6,9 @@ it was a perfect opportunity to try out some real world signal processing. I
 found that research into "photoplethysmography" is well-established if not
 industry-ready.
 
+N.B. This was a course project; this implementation is not robust, and not
+particularly suited for any purpose.
+
 The most closely related work is:
 "Non-contact, automated cardiac pulse measurements using video imaging and blind
 source separation" Ming-Zher Poh, Daniel J. McDuff, Rosalind W. Picard.
